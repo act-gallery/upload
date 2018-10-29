@@ -1,0 +1,73 @@
+@extends(_base)
+@import demo.upload.*;
+@args List<MultipleImage> images;
+
+<form action="/multi/by_file" method="post" enctype="multipart/form-data">
+  <h3>By File</h3>
+  <div class="line">
+    <input type="text" name="title">
+  </div>
+  <div class="line">
+    <input type="file" name="image">
+  </div>
+  <div class="line">
+    <input type="file" name="image">
+  </div>
+  <div class="line">
+    <button type="submit">Upload</button>
+  </div>
+</form>
+
+<form action="/multi/by_sobj" method="post" enctype="multipart/form-data">
+  <h3>By SObject</h3>
+  <div class="line">
+    <input type="text" name="title">
+  </div>
+  <div class="line">
+    <input type="file" name="image">
+  </div>
+  <div class="line">
+    <input type="file" name="image">
+  </div>
+  <div class="line">
+    <button type="submit">Upload</button>
+  </div>
+</form>
+
+
+<form action="/multi/by_bind" method="post" enctype="multipart/form-data">
+  <h3>Direct POJO Bind</h3>
+  <div class="line">
+    <input type="text" name="image.title">
+  </div>
+  <div class="line">
+    <input type="file" name="image.images">
+  </div>
+  <div class="line">
+    <input type="file" name="image.images">
+  </div>
+  <div class="line">
+    <input type="file" name="image.images">
+  </div>
+  <div class="line">
+    <input type="file" name="image.images">
+  </div>
+  <div class="line">
+    <button type="submit">Upload</button>
+  </div>
+</form>
+
+
+<hr/>
+<ul id="gallery">
+  @for (images) {
+  <li>
+      <p>@_.getTitle()</p>
+      <ul>
+        @for(String url: _.getImageUrls()) {
+        <img src="@url">
+        }
+      </ul>
+  </li>
+  }
+</ul>
