@@ -67,7 +67,7 @@ public class MultipleImage extends MorphiaModel<MultipleImage> {
     }
 
     public List<String> getImageUrls() {
-        return C.list(images).filter($.F.notNull()).map(ISObject::getUrl);
+        return C.list(images).filter($.F.requireNotNull()).map(ISObject::getUrl);
     }
 
     public static MultipleImage ofSObjects(String title, List<ISObject> images) {
