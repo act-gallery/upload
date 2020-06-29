@@ -24,6 +24,7 @@ import act.db.morphia.MorphiaModel;
 import act.storage.Store;
 import org.mongodb.morphia.annotations.Entity;
 import org.osgl.$;
+import org.osgl.Lang;
 import org.osgl.storage.ISObject;
 import org.osgl.storage.impl.SObject;
 import org.osgl.util.C;
@@ -67,7 +68,12 @@ public class MultipleImage extends MorphiaModel<MultipleImage> {
     }
 
     public List<String> getImageUrls() {
-        return C.list(images).filter($.F.requireNotNull()).map(ISObject::getUrl);
+        return C.list(images).filter($.F.requireNotNull()).map(new Lang.Transformer<ISObject, String>() {
+            @Override
+            public String transform(ISObject isObject) {
+                return isObject.getUrl();
+            }
+        });
     }
 
     public static MultipleImage ofSObjects(String title, List<ISObject> images) {
@@ -75,6 +81,11 @@ public class MultipleImage extends MorphiaModel<MultipleImage> {
     }
 
     public static MultipleImage ofFiles(String title, List<File> files) {
-        return new MultipleImage(title, C.list(files).map(SObject::of));
+        return new MultipleImage(title, C.list(files).map(new Lang.Transformer<File, ISObject>() {
+            @Override
+            public ISObject transform(File file) {
+                return SObject.of(file);
+            }
+        }));
     }
 }
